@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Composer Workflow Diagram</title>
+  <style>
+    :root { --bg:#0a1008; --panel:#1a2a16; --panel2:#22391e; --line:#4d8340; --text:#edfce8; --muted:#bbd5b3; --accent:#8cff95; --ok:#8de9ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:radial-gradient(circle at 20% 0%, #22411e, #0a1008 52%, #050904 100%); color:var(--text); font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif; padding:24px; }
+    .wrap { max-width:1220px; margin:0 auto; display:grid; gap:16px; }
+    .card { background:linear-gradient(165deg, rgba(30,49,25,.96), rgba(15,24,12,.96)); border:1px solid var(--line); border-radius:14px; padding:16px 18px; }
+    h1 { margin:0 0 8px; font-size:30px; }
+    h2 { margin:0 0 10px; font-size:20px; color:var(--accent); }
+    p, li { color:var(--muted); }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .chip { font-size:12px; border:1px solid #5b9b4d; border-radius:999px; padding:4px 9px; background:rgba(51,86,43,.35); color:#e7f9e3; }
+    .diagram { display:flex; flex-wrap:wrap; align-items:stretch; gap:10px; margin-top:8px; }
+    .node { min-width:170px; max-width:230px; background:var(--panel2); border:1px solid #629f56; border-radius:10px; padding:10px; }
+    .node strong { display:block; color:#fff; font-size:14px; margin-bottom:6px; }
+    .node small { display:block; color:var(--muted); font-size:12px; }
+    .node.ok { border-color:#3c8192; background:rgba(26,58,66,.5); }
+    .arrow { min-width:22px; display:flex; align-items:center; justify-content:center; color:#baf7c2; font-weight:700; font-size:16px; }
+    .stage-grid { display:grid; grid-template-columns:1fr; gap:10px; }
+    .stage { border:1px solid #5b944f; border-radius:10px; padding:10px; background:rgba(29,49,24,.65); }
+    .stage h3 { margin:0 0 6px; color:#b8ffb9; font-size:16px; }
+    @media (min-width:980px) { .stage-grid { grid-template-columns:1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <h1>Music Composer Workflow</h1>
+      <p>Dedicated diagram for MUSIC_COMPOSER, the Studio Deck adaptive composition workflow.</p>
+      <p><a href="workflow_diagrams_index.html" style="color:#8cff95; font-weight:600;">Open Workflow Diagrams Hub</a></p>
+      <div class="chips">
+        <span class="chip">Canonical mode: MUSIC_COMPOSER</span>
+        <span class="chip">Aliases: MUSIC, MUSIC_DESIGN, AUDIO_COMPOSER</span>
+        <span class="chip">Blueprint metaphor: Studio Deck</span>
+        <span class="chip">Execution: Parallel specialists + Critic synthesis</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Runtime Flow Diagram</h2>
+      <div class="diagram">
+        <div class="node"><strong>1. Intake</strong><small>run request with composition goal and mode</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>2. Canonicalization</strong><small>alias modes normalize to MUSIC_COMPOSER</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>3. Crew Assignment</strong><small>Music Composer + Researcher + Coder + Critic</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>4. Stage Loop</strong><small>Studio Deck stages execute with artifacts</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node ok"><strong>5. Completion</strong><small>session checkpoint and completion event</small></div>
+      </div>
+      <p>How it works: stages execute sequentially, workers run in parallel per stage, and Critic merges outputs into one verdict.</p>
+    </section>
+
+    <section class="card">
+      <h2>Studio Deck Stages</h2>
+      <div class="stage-grid">
+        <div class="stage"><h3>Score Brief</h3><ul><li>Musical direction and emotional arc</li><li>Instrument palette and tempo map</li><li>Cue sheet for gameplay states</li></ul></div>
+        <div class="stage"><h3>Theme Forge</h3><ul><li>Main motifs</li><li>Combat and ambience variants</li><li>Loop transition strategy</li></ul></div>
+        <div class="stage"><h3>Voice Direction</h3><ul><li>Voice style guide</li><li>Line delivery notes</li><li>Voice handoff payload</li></ul></div>
+        <div class="stage"><h3>Mix Master</h3><ul><li>Mix/master checklist</li><li>Loudness targets</li><li>Runtime implementation notes</li></ul></div>
+      </div>
+      <p>Asset queue behavior: Theme Forge, Voice Direction, and Mix Master can queue music, voice, and avatar jobs when creative pipeline capability is active.</p>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GGUF/Local Direct Workflow Diagram</title>
+  <style>
+    :root { --bg:#0b1210; --panel:#17302a; --panel2:#1f4038; --line:#3d8a7a; --text:#e9fff7; --muted:#b5ded2; --accent:#80ffd8; --ok:#c9f27c; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:radial-gradient(circle at 20% 0%, #1f5246, #0b1210 52%, #050907 100%); color:var(--text); font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif; padding:24px; }
+    .wrap { max-width:1100px; margin:0 auto; display:grid; gap:16px; }
+    .card { background:linear-gradient(165deg, rgba(26,57,49,.96), rgba(11,25,21,.96)); border:1px solid var(--line); border-radius:14px; padding:16px 18px; }
+    h1 { margin:0 0 8px; font-size:30px; }
+    h2 { margin:0 0 10px; font-size:20px; color:var(--accent); }
+    p, li { color:var(--muted); }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .chip { font-size:12px; border:1px solid #4b9f8d; border-radius:999px; padding:4px 9px; background:rgba(47,96,86,.35); color:#e1fff7; }
+    .diagram { display:flex; flex-wrap:wrap; align-items:stretch; gap:10px; margin-top:8px; }
+    .node { min-width:185px; max-width:240px; background:var(--panel2); border:1px solid #4f9d8d; border-radius:10px; padding:10px; }
+    .node strong { display:block; color:#fff; font-size:14px; margin-bottom:6px; }
+    .node small { display:block; color:var(--muted); font-size:12px; }
+    .node.ok { border-color:#8ea848; background:rgba(55,70,27,.5); }
+    .arrow { min-width:22px; display:flex; align-items:center; justify-content:center; color:#b6f4e2; font-weight:700; font-size:16px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <h1>GGUF / Local Direct Workflow</h1>
+      <p>Dedicated diagram for DIRECT_CHAT_GGUF and LOCAL_GGUF compatibility modes.</p>
+      <p><a href="workflow_diagrams_index.html" style="color:#80ffd8; font-weight:600;">Open Workflow Diagrams Hub</a></p>
+      <div class="chips">
+        <span class="chip">Modes: DIRECT_CHAT_GGUF, LOCAL_GGUF</span>
+        <span class="chip">Primary persona: odysseus</span>
+        <span class="chip">Execution style: single-agent direct</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Runtime Flow Diagram</h2>
+      <div class="diagram">
+        <div class="node"><strong>1. Intake</strong><small>mode accepted from caller as DIRECT_CHAT_GGUF or LOCAL_GGUF</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>2. Persona Routing</strong><small>mode maps to standard odysseus persona</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>3. Single Agent Loop</strong><small>same direct execution behavior as DIRECT_CHAT</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node ok"><strong>4. Session Output</strong><small>event stream and completion delivered</small></div>
+      </div>
+      <p>How it works: these modes provide route-level distinction while preserving direct chat execution semantics.</p>
+    </section>
+  </main>
+</body>
+</html>

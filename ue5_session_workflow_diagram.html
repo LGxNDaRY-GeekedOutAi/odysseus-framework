@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UE5 Session Workflow Diagram — Odysseus</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --bg: #060d10;
+      --panel: #0a1a18;
+      --panel2: #0d2420;
+      --text: #e0f5ee;
+      --muted: #6aaa8e;
+      --line: #1a4a38;
+      --accent: #3de8a0;
+      --accent2: #38c6f5;
+      --warn: #f0b942;
+      --risk: #f07070;
+      --purple: #c090f8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(ellipse at 15% 0%, #082018 0%, var(--bg) 55%, #020808 100%);
+      color: var(--text);
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      line-height: 1.5;
+      padding: 28px 20px;
+    }
+
+    .wrap { max-width: 1340px; margin: 0 auto; display: grid; gap: 20px; }
+
+    .card {
+      background: linear-gradient(155deg, rgba(10,26,22,0.97), rgba(5,14,12,0.97));
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    .card.hero { border-color: #2a6050; }
+
+    h1 { font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+    h2 { font-size: 18px; font-weight: 600; color: var(--accent); margin-bottom: 12px; }
+    h3 { font-size: 15px; font-weight: 600; color: var(--accent2); margin-bottom: 8px; }
+
+    p, li { color: var(--muted); font-size: 14px; }
+
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .chip {
+      font-size: 11px; font-weight: 500; color: #b0e8d0;
+      border: 1px solid #2a6048; padding: 3px 10px;
+      border-radius: 999px; background: rgba(20,56,38,0.35);
+    }
+
+    /* ── Flow diagram ── */
+    .diagram {
+      display: flex; align-items: center;
+      flex-wrap: wrap; gap: 10px; margin-top: 12px;
+    }
+    .node {
+      min-width: 170px; max-width: 230px;
+      background: var(--panel2); border: 1px solid #2a6048;
+      border-radius: 10px; padding: 10px 12px;
+    }
+    .node strong { display: block; color: #fff; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .node small   { display: block; color: var(--muted); font-size: 11px; line-height: 1.4; }
+
+    .node.closed  { border-color: #4a4a4a; background: rgba(30,30,30,0.5); }
+    .node.idle    { border-color: #2a6048; background: rgba(16,46,34,0.5); }
+    .node.viewport{ border-color: #2a6680; background: rgba(14,44,58,0.5); }
+    .node.lumen   { border-color: #6a5020; background: rgba(52,38,14,0.5); }
+    .node.pie     { border-color: #8a3030; background: rgba(62,18,18,0.5); }
+    .node.seq     { border-color: #7a2050; background: rgba(58,12,36,0.5); }
+    .node.reload  { border-color: #5a30a0; background: rgba(42,18,78,0.5); }
+    .node.asset   { border-color: #3080b0; background: rgba(16,52,78,0.5); }
+
+    .arrow { color: #4aaa80; font-weight: 700; font-size: 18px; padding: 0 2px; }
+
+    /* ── State grid ── */
+    .state-grid { display: grid; gap: 10px; margin-top: 12px; }
+    .state-row {
+      display: grid; grid-template-columns: 1fr 80px 1fr 1fr;
+      gap: 10px; align-items: center;
+      padding: 10px 14px; border: 1px solid #1a4030;
+      border-radius: 10px; background: rgba(10,26,20,0.55);
+      font-size: 13px;
+    }
+    .state-row .ue5-state { color: var(--accent); font-weight: 600; }
+    .state-row .vram-range { color: var(--muted); text-align: center; font-family: monospace; font-size: 12px; }
+    .state-row .action { font-weight: 500; }
+    .state-row .action.full  { color: var(--accent); }
+    .state-row .action.partial { color: #60d0a8; }
+    .state-row .action.eject { color: var(--warn); }
+    .state-row .note { color: var(--muted); font-size: 12px; }
+
+    .state-header {
+      display: grid; grid-template-columns: 1fr 80px 1fr 1fr;
+      gap: 10px; padding: 6px 14px;
+      font-size: 11px; font-weight: 600; color: #5a9080;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    /* ── VRAM bar ── */
+    .vram-section { margin-top: 12px; }
+    .vram-bar-wrap { margin: 6px 0; }
+    .vram-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 3px; }
+    .vram-bar-track { height: 14px; border-radius: 7px; background: rgba(10,30,22,0.8); border: 1px solid #1a4030; overflow: hidden; }
+    .vram-bar-fill  { height: 100%; border-radius: 7px; transition: width 0.3s; }
+
+    /* ── Table ── */
+    .table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+    .table th, .table td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+    .table th { background: rgba(20,56,38,0.3); color: #a0e0c0; font-weight: 600; }
+    .table td { color: var(--muted); }
+
+    /* ── Grid ── */
+    .grid-2 { display: grid; gap: 16px; grid-template-columns: 1fr; }
+    @media (min-width: 960px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+
+    .how {
+      margin-top: 10px; padding: 10px 14px;
+      border-left: 3px solid #2a7050; background: rgba(14,40,28,0.5);
+      border-radius: 0 8px 8px 0; color: #b0e4cc; font-size: 13px;
+    }
+
+    .endpoint {
+      display: flex; align-items: baseline; gap: 8px;
+      padding: 8px 10px; border: 1px solid #1a4030;
+      border-radius: 8px; background: rgba(10,28,20,0.6); margin-bottom: 6px;
+    }
+    .method { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 4px; flex-shrink: 0; }
+    .method.get  { background: #1a4a30; color: #5de0a0; border: 1px solid #2a6a44; }
+    .method.post { background: #1a2a60; color: #7090f8; border: 1px solid #2a4080; }
+    .path { font-family: monospace; font-size: 12px; color: #70c8a8; }
+    .edesc { font-size: 12px; color: var(--muted); margin-left: auto; }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    code { font-family: monospace; font-size: 12px; background: rgba(20,50,36,0.5); padding: 1px 5px; border-radius: 4px; color: #70e0a8; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+
+    <!-- ── Hero ── -->
+    <section class="card hero">
+      <h1>UE5 Session Workflow</h1>
+      <p>Dedicated diagram for the <strong>UE5_SESSION</strong> co-pilot mode. Odysseus monitors UE5Editor.exe VRAM in real time and automatically manages the GGUF model state throughout the entire Unreal Engine session — no manual intervention required.</p>
+      <p style="margin-top:8px;"><a href="workflow_diagrams_index.html" style="font-weight:600;">← Workflow Diagrams Hub</a></p>
+      <div class="meta">
+        <span class="chip">Canonical mode: UE5_SESSION</span>
+        <span class="chip">Aliases: UE5, UNREAL, UNREAL_ENGINE</span>
+        <span class="chip">Monitor: core/ue5_session_monitor.py</span>
+        <span class="chip">Governor: core/dynamic_vram_governor.py</span>
+        <span class="chip">Poll interval: 2 s (hysteresis: 2 samples)</span>
+        <span class="chip">Hardware: RTX 4080 16GB · i9-13900KF · 64GB DDR5</span>
+      </div>
+    </section>
+
+    <!-- ── Session lifecycle ── -->
+    <section class="card">
+      <h2>Session Lifecycle</h2>
+      <div class="diagram">
+        <div class="node closed"><strong>UE5 closed</strong><small>No UE5Editor.exe detected. Model: FULL_GPU, 8 P-core threads.</small></div>
+        <div class="arrow">→</div>
+        <div class="node idle"><strong>UE5 opens</strong><small>Editor idle. ~2.5–4 GB VRAM. Governor → PARTIAL_GPU (25 layers).</small></div>
+        <div class="arrow">→</div>
+        <div class="node viewport"><strong>Viewport active</strong><small>Realtime rendering. ~5–7.5 GB VRAM. → PARTIAL_GPU (20 layers).</small></div>
+        <div class="arrow">→</div>
+        <div class="node lumen"><strong>HW Lumen</strong><small>Ray-traced GI. ~8–10.5 GB VRAM. → PARTIAL_GPU (12 layers, 6 threads).</small></div>
+        <div class="arrow">→</div>
+        <div class="node pie"><strong>Hit ▶ Play (PIE)</strong><small>&gt;10.5 GB VRAM. → RAM_CACHE eject (~3 s). UE5 owns all VRAM.</small></div>
+        <div class="arrow">→</div>
+        <div class="node reload"><strong>Hit ⏹ Stop</strong><small>VRAM drops. Monitor detects in 4 s. → Reload from warm cache (~3 s).</small></div>
+        <div class="arrow">→</div>
+        <div class="node asset"><strong>Asset push</strong><small>Generate texture/3D/video → push via UE5 bridge. → Full eject + Pinokio.</small></div>
+      </div>
+      <div class="how">Every state transition is fully automatic. The UE5 Session Monitor fires the VRAM governor callback, which manages the model transition using the warm cache — powered by your 64 GB DDR5 as the reload buffer.</div>
+    </section>
+
+    <!-- ── Render State Table ── -->
+    <section class="card">
+      <h2>Render State → Governor Action Mapping</h2>
+      <div class="state-header">
+        <span>UE5 Render State</span>
+        <span>VRAM Range</span>
+        <span>Model Action</span>
+        <span>Notes</span>
+      </div>
+      <div class="state-grid">
+        <div class="state-row">
+          <span class="ue5-state">CLOSED</span>
+          <span class="vram-range">&lt; 0.5 GB</span>
+          <span class="action full">FULL_GPU — all layers, 8 threads</span>
+          <span class="note">UE5Editor.exe not found. Maximum performance.</span>
+        </div>
+        <div class="state-row">
+          <span class="ue5-state">IDLE</span>
+          <span class="vram-range">0.5–4 GB</span>
+          <span class="action partial">PARTIAL_GPU — 25 layers, 8 threads</span>
+          <span class="note">Editor open, no active scene. ~5 GB model VRAM.</span>
+        </div>
+        <div class="state-row">
+          <span class="ue5-state">VIEWPORT</span>
+          <span class="vram-range">4–7.5 GB</span>
+          <span class="action partial">PARTIAL_GPU — 20 layers, 8 threads</span>
+          <span class="note">Realtime viewport rendering active.</span>
+        </div>
+        <div class="state-row">
+          <span class="ue5-state">HW_LUMEN</span>
+          <span class="vram-range">7.5–10.5 GB</span>
+          <span class="action partial">PARTIAL_GPU — 12 layers, 6 threads</span>
+          <span class="note">Hardware ray-traced Lumen. Reduce threads for UE5 headroom.</span>
+        </div>
+        <div class="state-row">
+          <span class="ue5-state">PIE</span>
+          <span class="vram-range">10.5–13 GB</span>
+          <span class="action eject">RAM_CACHE — eject, 4 threads</span>
+          <span class="note">Play-In-Editor. UE5 owns all 16 GB. Reload on Stop.</span>
+        </div>
+        <div class="state-row">
+          <span class="ue5-state">SEQUENCER</span>
+          <span class="vram-range">&gt; 13 GB</span>
+          <span class="action eject">RAM_CACHE — full eject, 4 threads</span>
+          <span class="note">Cinematic / movie render queue. Highest priority render.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── VRAM budget visualisation ── -->
+    <section class="card">
+      <h2>VRAM Budget by Scenario (RTX 4080 — 16 GB)</h2>
+      <div class="vram-section">
+
+        <div class="vram-bar-wrap">
+          <div class="vram-bar-label"><span>UE5 CLOSED — Full VRAM to Odysseus</span><span>~11 GB model / 5 GB free</span></div>
+          <div class="vram-bar-track">
+            <div class="vram-bar-fill" style="width:69%; background:linear-gradient(90deg,#2a7a60,#3ae0a0);"></div>
+          </div>
+        </div>
+
+        <div class="vram-bar-wrap">
+          <div class="vram-bar-label"><span>UE5 IDLE — Partial offload 25 layers</span><span>~5 GB model + ~3 GB UE5 = 8 GB / 8 GB free</span></div>
+          <div class="vram-bar-track">
+            <div class="vram-bar-fill" style="width:50%; background:linear-gradient(90deg,#1e6050,#2ac090);"></div>
+          </div>
+        </div>
+
+        <div class="vram-bar-wrap">
+          <div class="vram-bar-label"><span>UE5 VIEWPORT — Partial offload 20 layers</span><span>~4 GB model + ~6 GB UE5 = 10 GB / 6 GB free</span></div>
+          <div class="vram-bar-track">
+            <div class="vram-bar-fill" style="width:63%; background:linear-gradient(90deg,#1a5070,#30a0d0);"></div>
+          </div>
+        </div>
+
+        <div class="vram-bar-wrap">
+          <div class="vram-bar-label"><span>UE5 HW_LUMEN — Partial offload 12 layers</span><span>~2.5 GB model + ~9.5 GB UE5 = 12 GB / 4 GB free</span></div>
+          <div class="vram-bar-track">
+            <div class="vram-bar-fill" style="width:75%; background:linear-gradient(90deg,#604020,#e09030);"></div>
+          </div>
+        </div>
+
+        <div class="vram-bar-wrap">
+          <div class="vram-bar-label"><span>UE5 PIE — Model ejected to RAM</span><span>0 GB model + ~12 GB UE5 = 12 GB / 4 GB UE5 headroom</span></div>
+          <div class="vram-bar-track">
+            <div class="vram-bar-fill" style="width:75%; background:linear-gradient(90deg,#702020,#e04040);"></div>
+          </div>
+        </div>
+
+        <div class="vram-bar-wrap">
+          <div class="vram-bar-label"><span>UE5 SEQUENCER — Full eject</span><span>0 GB model + ~14 GB UE5 = 14 GB / 2 GB free</span></div>
+          <div class="vram-bar-track">
+            <div class="vram-bar-fill" style="width:88%; background:linear-gradient(90deg,#801030,#f03060);"></div>
+          </div>
+        </div>
+      </div>
+      <div class="how" style="margin-top:12px;">The warm cache stores model weights in ~8 GB of your 64 GB DDR5 during eject states. DDR5 bandwidth (~89 GB/s) means reload from page cache takes ~3 s — vs 30–60 s cold from NVMe.</div>
+    </section>
+
+    <!-- ── Thread strategy ── -->
+    <div class="grid-2">
+      <section class="card">
+        <h2>i9-13900KF Thread Strategy</h2>
+        <table class="table">
+          <thead><tr><th>UE5 State</th><th>llama.cpp threads</th><th>Reason</th></tr></thead>
+          <tbody>
+            <tr><td>CLOSED / IDLE</td><td>8 (all P-cores)</td><td>Maximum inference throughput</td></tr>
+            <tr><td>VIEWPORT / HW_LUMEN</td><td>8 → 6</td><td>Free P-core headroom for UE5 render thread</td></tr>
+            <tr><td>PIE / SEQUENCER</td><td>4</td><td>UE5 game thread + render thread need priority</td></tr>
+          </tbody>
+        </table>
+        <div class="how" style="margin-top:10px;">E-cores (logical 16–31) handle UE5 Nanite streaming, async loading, and shader compilation automatically via the Windows scheduler — no manual affinity needed.</div>
+      </section>
+
+      <section class="card">
+        <h2>API Endpoints</h2>
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <span class="path">/vram/ue5/session-status</span>
+          <span class="edesc">Live render state, per-process VRAM split</span>
+        </div>
+        <div class="endpoint">
+          <span class="method get">GET</span>
+          <span class="path">/vram/governor/status</span>
+          <span class="edesc">Current tier, model state, VRAM stats</span>
+        </div>
+        <div class="endpoint">
+          <span class="method post">POST</span>
+          <span class="path">/vram/governor/hint</span>
+          <span class="edesc">Force tier: <code>{"tier":"UE5_COEXIST"}</code> or restore</span>
+        </div>
+        <div class="how" style="margin-top:10px;">Use <code>workflow_mode=UE5_SESSION</code> in your <code>/run</code> request to enter UE5 co-pilot mode. The monitor starts automatically at server startup.</div>
+      </section>
+    </div>
+
+    <!-- ── Asset push flow ── -->
+    <section class="card">
+      <h2>Asset Generation → UE5 Push Flow</h2>
+      <div class="diagram">
+        <div class="node"><strong>User request</strong><small>"Generate a character texture and push to UE5"</small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>Governor classifies</strong><small>asset_types=['image_creation'] → IMAGE_GEN or three_d → RENDER_3D</small></div>
+        <div class="arrow">→</div>
+        <div class="node pie"><strong>Model ejected</strong><small>UE5_ASSET_PUSH tier → RAM_CACHE. GPU freed. ~3 s.</small></div>
+        <div class="arrow">→</div>
+        <div class="node asset"><strong>Pinokio job</strong><small>Image / 3D / video generated with full 14–15 GB available</small></div>
+        <div class="arrow">→</div>
+        <div class="node asset"><strong>UE5 bridge push</strong><small>Asset routed via native_mcp / web_remote_control to UE5 project</small></div>
+        <div class="arrow">→</div>
+        <div class="node reload"><strong>Model restored</strong><small>5 s delay → reload from warm cache. Back to UE5_COEXIST partial offload.</small></div>
+      </div>
+      <div class="how">The full cycle — eject, generate, push, reload — takes ~10–15 seconds total. During that window UE5 has access to the full 16 GB for import and level streaming.</div>
+    </section>
+
+  </main>
+</body>
+</html>

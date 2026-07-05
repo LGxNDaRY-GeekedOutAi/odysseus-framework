@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Odysseus Workflow Profiles Diagram</title>
+  <style>
+    :root {
+      --bg: #081018;
+      --panel: #0e1b26;
+      --panel-2: #132534;
+      --text: #e7f0f7;
+      --muted: #9eb2c3;
+      --line: #28506b;
+      --accent: #55c1ff;
+      --accent-2: #66e0a3;
+      --warn: #ffd166;
+      --risk: #ff8a80;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 15% 0%, #102538 0%, var(--bg) 45%, #050a10 100%);
+      color: var(--text);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.45;
+      padding: 24px;
+    }
+
+    .wrap {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero,
+    .card {
+      background: linear-gradient(160deg, rgba(19, 37, 52, 0.95), rgba(11, 25, 36, 0.95));
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    h1, h2, h3 { margin: 0 0 8px; }
+    h1 { font-size: 30px; letter-spacing: 0.3px; }
+    h2 { font-size: 20px; color: var(--accent); }
+    h3 { font-size: 17px; color: var(--accent-2); }
+
+    p, li { color: var(--muted); }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .chip {
+      font-size: 12px;
+      color: #d0e8f8;
+      border: 1px solid #2e6587;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(33, 72, 99, 0.3);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    .table th,
+    .table td {
+      border: 1px solid var(--line);
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .table th {
+      color: var(--text);
+      background: rgba(46, 101, 135, 0.2);
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .legend span {
+      display: inline-block;
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(22, 47, 64, 0.7);
+    }
+
+    .diagram {
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .node {
+      min-width: 170px;
+      max-width: 240px;
+      background: var(--panel-2);
+      border: 1px solid #326a8f;
+      border-radius: 10px;
+      padding: 10px;
+      color: #dbeeff;
+      position: relative;
+    }
+
+    .node strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #ffffff;
+      font-size: 14px;
+    }
+
+    .node small {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .node.warn { border-color: #8a6b2a; background: rgba(69, 51, 20, 0.45); }
+    .node.risk { border-color: #8d3f3a; background: rgba(74, 28, 26, 0.45); }
+    .node.done { border-color: #2f7f5a; background: rgba(23, 58, 42, 0.45); }
+
+    .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #86c4ea;
+      min-width: 24px;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .how {
+      margin-top: 10px;
+      padding: 10px;
+      border-left: 3px solid #3f8dbb;
+      background: rgba(26, 55, 74, 0.35);
+      border-radius: 8px;
+      color: #cce4f4;
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 1020px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Odysseus Workflow Profiles - Runtime Diagrams</h1>
+      <p>
+        This file diagrams every workflow mode currently available in the software runtime and UI routing paths.
+        It is based on the workflow mode canonicalization and adaptive blueprint logic in the backend runtime.
+      </p>
+      <div class="meta">
+        <span class="chip">Source: agent_orchestrator/main.py</span>
+        <span class="chip">Adaptive engine: execute_agent_run</span>
+        <span class="chip">UI mode list: dashboard/src/components/Cockpit.jsx</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Workflow Catalog</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Canonical Mode</th>
+            <th>Aliases</th>
+            <th>Execution Type</th>
+            <th>Primary Persona</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>DIRECT_CHAT</td>
+            <td>None (default)</td>
+            <td>Single-agent direct execution</td>
+            <td>odysseus</td>
+          </tr>
+          <tr>
+            <td>SOFTWARE_DESIGN</td>
+            <td>SOFTWARE_DEVELOPER, SOFTWARE_DEV</td>
+            <td>Adaptive 4-stage workflow (Shipyard)</td>
+            <td>odysseus_software_dev</td>
+          </tr>
+          <tr>
+            <td>VIDEO_GAME_DESIGNER</td>
+            <td>GAME_DESIGN, VIDEO_GAME_DEV</td>
+            <td>Adaptive 4-stage workflow (Foundry Line)</td>
+            <td>odysseus_game_designer</td>
+          </tr>
+          <tr>
+            <td>MUSIC_COMPOSER</td>
+            <td>MUSIC, MUSIC_DESIGN, AUDIO_COMPOSER</td>
+            <td>Adaptive 4-stage workflow (Studio Deck)</td>
+            <td>odysseus_music_composer</td>
+          </tr>
+          <tr>
+            <td>REVERSE_ENGINEERING</td>
+            <td>REVERSE_ENGINEER, REV_ENG, RE, SECURITY_RESEARCH</td>
+            <td>Adaptive 4-stage workflow with authorization gates (Lab Bench)</td>
+            <td>odysseus_reverse_engineer</td>
+          </tr>
+          <tr>
+            <td>RESEARCH_RD</td>
+            <td>None</td>
+            <td>Single-agent direct execution</td>
+            <td>odysseus_research_rd</td>
+          </tr>
+          <tr>
+            <td>DIRECT_CHAT_GGUF / LOCAL_GGUF</td>
+            <td>None</td>
+            <td>Single-agent direct execution</td>
+            <td>odysseus</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="legend">
+        <span>Adaptive modes run specialist crew in parallel, then Critic synthesis</span>
+        <span>Single-agent modes bypass adaptive stage blueprint</span>
+        <span>Reverse engineering includes explicit scope/authorization checks</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Core Engine Flow (All Modes)</h2>
+      <div class="diagram">
+        <div class="node"><strong>1. /run request</strong><small>session_id + user_goal + workflow_mode</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>2. Canonicalize mode</strong><small>alias map resolves to canonical workflow key</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>3. Persona select</strong><small>persona_from_mode chooses primary agent persona</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>4. Branch</strong><small>Adaptive blueprint exists? If yes, staged crew flow. If no, single-agent run.</small></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h3>DIRECT_CHAT</h3>
+        <div class="diagram">
+          <div class="node"><strong>Goal intake</strong><small>mode defaults to DIRECT_CHAT when unset in normal chat flow</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node"><strong>Single Odysseus agent</strong><small>no adaptive stage blueprint</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node done"><strong>Result stream</strong><small>events and final response returned to session</small></div>
+        </div>
+        <div class="how">How it works: fastest path for interactive commands and conversation. It bypasses staged specialist orchestration and executes one agent loop.</div>
+      </article>
+
+      <article class="card">
+        <h3>SOFTWARE_DESIGN (Shipyard)</h3>
+        <div class="diagram">
+          <div class="node"><strong>Keel Alignment</strong><small>problem framing, context map, success metrics</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node"><strong>Hull Framing</strong><small>domain boundaries, contracts, failure modes</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node"><strong>Systems Wiring</strong><small>integration sequence, observability, security checkpoints</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node done"><strong>Launch Dock</strong><small>cutover, rollback, acceptance checklist</small></div>
+        </div>
+        <div class="how">How it works: each stage runs specialist crew in parallel (Software Developer, Researcher, Coder) followed by Critic synthesis. Checkpoints and artifacts are saved per stage.</div>
+      </article>
+
+      <article class="card">
+        <h3>VIDEO_GAME_DESIGNER (Foundry Line)</h3>
+        <div class="diagram">
+          <div class="node"><strong>Forge Brief</strong><small>fantasy pillars, loop target, scope guardrails</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node"><strong>Prototype Cell</strong><small>playable loop plan, test matrix, remediation</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node"><strong>Content Mill</strong><small>asset pipeline and integration handoff</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node done"><strong>Ship Gate</strong><small>readiness score, risk list, go/no-go</small></div>
+        </div>
+        <div class="how">How it works: adaptive multi-specialist synthesis with game designer-led planning. During Content Mill, creative asset queue can trigger image, video, music, voice, avatar, and 3D job creation when pipeline contributors are active.</div>
+      </article>
+
+      <article class="card">
+        <h3>MUSIC_COMPOSER (Studio Deck)</h3>
+        <div class="diagram">
+          <div class="node"><strong>Score Brief</strong><small>direction, emotional arc, cue map</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node"><strong>Theme Forge</strong><small>motifs, combat and ambience variations</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node"><strong>Voice Direction</strong><small>voice style and delivery payload</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node done"><strong>Mix Master</strong><small>mastering targets and runtime notes</small></div>
+        </div>
+        <div class="how">How it works: adaptive stage execution with music persona leading. Theme Forge, Voice Direction, and Mix Master can queue music, voice, and avatar media jobs when creative pipeline capability is active.</div>
+      </article>
+
+      <article class="card">
+        <h3>REVERSE_ENGINEERING (Lab Bench)</h3>
+        <div class="diagram">
+          <div class="node warn"><strong>Authorization Gate</strong><small>scope and declaration checks; optional master override policy path</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node"><strong>Scope Authorization</strong><small>legal scope, baseline, risk handling</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node"><strong>Artifact Teardown</strong><small>component map and decode strategy</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node"><strong>Debug Trace</strong><small>trace/fault localization and state reconstruction</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node done"><strong>Vulnerability Triage</strong><small>defensive findings, impact, mitigations</small></div>
+        </div>
+        <div class="how">How it works: this mode is policy-gated before stage execution. If authorization metadata and scope controls pass, adaptive specialist synthesis runs through four defensive-analysis stages and emits auditable checkpoints.</div>
+      </article>
+
+      <article class="card">
+        <h3>RESEARCH_RD</h3>
+        <div class="diagram">
+          <div class="node"><strong>Goal intake</strong><small>mode maps to odysseus_research_rd persona</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node"><strong>Single research agent run</strong><small>no adaptive blueprint stages defined</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node done"><strong>Result stream</strong><small>summary and events written to session</small></div>
+        </div>
+        <div class="how">How it works: dedicated R&amp;D persona route for exploratory or analytical runs where multi-stage adaptive orchestration is not required.</div>
+      </article>
+
+      <article class="card">
+        <h3>DIRECT_CHAT_GGUF and LOCAL_GGUF</h3>
+        <div class="diagram">
+          <div class="node"><strong>Goal intake</strong><small>runtime mode accepted by persona map</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node"><strong>Odysseus persona run</strong><small>same single-agent execution behavior as direct chat path</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node done"><strong>Result stream</strong><small>response and completion event returned</small></div>
+        </div>
+        <div class="how">How it works: compatibility variants that keep direct single-agent semantics while allowing mode-level separation in callers.</div>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Adaptive Stage Execution Internals</h2>
+      <div class="diagram">
+        <div class="node"><strong>Stage starts</strong><small>engine sets stage_id, label, pattern, capabilities</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>Parallel specialists</strong><small>non-critic personas run concurrently on staged_goal</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>Critic synthesis</strong><small>critic merges outputs, risks, and corrections</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>Checkpoint + artifact</strong><small>stage status and artifact persisted to session state</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node done"><strong>Optional asset queue</strong><small>media jobs queued by mode/stage capability rules</small></div>
+      </div>
+      <p style="margin-top: 10px;">
+        If any stage times out or fails, the workflow stops with checkpoint retention for recovery. If all stages pass, the run emits completion.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

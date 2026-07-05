@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Odysseus — Workflow Diagrams Hub</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --bg: #060c14;
+      --panel: #0c1a28;
+      --line: #1e4260;
+      --text: #e4f0ff;
+      --muted: #7090b0;
+      --accent: #38c6f5;
+      --green: #3de898;
+      --purple: #b080f8;
+      --orange: #f89040;
+      --warn: #f0b942;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(ellipse at 15% 0%, #0c2240 0%, var(--bg) 55%, #020508 100%);
+      color: var(--text);
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      padding: 32px 20px;
+      min-height: 100vh;
+    }
+
+    .wrap { max-width: 1100px; margin: 0 auto; display: grid; gap: 20px; }
+
+    .card {
+      background: linear-gradient(155deg, rgba(12,26,42,0.97), rgba(6,14,24,0.97));
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 22px 26px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    h2 { font-size: 16px; font-weight: 600; color: var(--accent); margin-bottom: 14px; }
+    p  { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+    .grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 700px) { .grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1000px) { .grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .item {
+      border: 1px solid #1e4060;
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: rgba(14,32,52,0.6);
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+    .item:hover {
+      border-color: var(--accent);
+      background: rgba(20,46,72,0.8);
+      transform: translateY(-2px);
+    }
+
+    .item-title {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .item-desc { color: var(--muted); font-size: 12px; line-height: 1.4; }
+
+    .badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 1px 6px; border-radius: 4px;
+      background: rgba(30,100,50,0.45); color: #6ee0a0;
+      border: 1px solid #286040; margin-left: 6px;
+      vertical-align: middle;
+    }
+    .badge.purple { background: rgba(70,30,110,0.45); color: #c090f8; border-color: #6030a0; }
+    .badge.orange { background: rgba(100,50,10,0.45); color: #f8b060; border-color: #a06020; }
+
+    .item.new { border-color: #1e5038; }
+    .item.new:hover { border-color: var(--green); }
+    .item.new .item-title { color: var(--green); }
+
+    .item.vram { border-color: #3a1a70; }
+    .item.vram:hover { border-color: var(--purple); }
+    .item.vram .item-title { color: var(--purple); }
+
+    .sep { border-top: 1px solid var(--line); margin: 6px 0; }
+
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .chip {
+      font-size: 11px; color: #a0c0e0; border: 1px solid #2a5070;
+      padding: 3px 9px; border-radius: 999px; background: rgba(20,50,80,0.3);
+    }
+    .chip.green { border-color: #2a6040; color: #80e0b0; background: rgba(20,60,36,0.3); }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+
+    <section class="card">
+      <h1>Odysseus — Workflow Diagrams Hub</h1>
+      <p>Central navigation for all Odysseus workflow, VRAM governor, and system optimization diagrams.</p>
+      <div class="meta">
+        <span class="chip">Runtime: agent_orchestrator/main.py</span>
+        <span class="chip">VRAM Governor: core/dynamic_vram_governor.py</span>
+        <span class="chip green">NEW: UE5 Session Monitor</span>
+        <span class="chip">Hardware: i9-13900KF · RTX 4080 16GB · 64GB DDR5</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Consolidated &amp; Reference</h2>
+      <div class="grid">
+        <a class="item" href="workflow_diagram.html">
+          <div class="item-title">All Profiles (Consolidated)</div>
+          <div class="item-desc">Complete workflow catalog, VRAM governor tiers, UE5 session states, adaptive stage internals, and new API endpoints.</div>
+        </a>
+        <a class="item vram" href="workflow_profiles_diagrams.html">
+          <div class="item-title">Workflow Profiles Diagrams <span class="badge purple">VRAM</span></div>
+          <div class="item-desc">Extended profile diagrams including resource tier mapping and Pinokio asset pipeline integration.</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Adaptive Workflow Modes</h2>
+      <div class="grid">
+        <a class="item" href="video_game_designer_workflow_diagram.html">
+          <div class="item-title">Video Game Designer</div>
+          <div class="item-desc">Foundry Line — 4-stage adaptive. Forge Brief → Prototype Cell → Content Mill → Ship Gate. Image/video/3D/music asset dispatch at Content Mill.</div>
+        </a>
+        <a class="item" href="software_designer_workflow_diagram.html">
+          <div class="item-title">Software Designer</div>
+          <div class="item-desc">Shipyard — 4-stage adaptive. Keel Alignment → Hull Framing → Systems Wiring → Launch Dock. TEXT_ONLY tier throughout.</div>
+        </a>
+        <a class="item" href="music_composer_workflow_diagram.html">
+          <div class="item-title">Music Composer</div>
+          <div class="item-desc">Studio Deck — 4-stage adaptive. Score Brief → Theme Forge → Voice Direction → Mix Master. MUSIC_GEN tier — model stays in VRAM.</div>
+        </a>
+        <a class="item" href="reverse_engineering_workflow_diagram.html">
+          <div class="item-title">Reverse Engineering</div>
+          <div class="item-desc">Lab Bench — 4-stage with authorization gates. Policy-gated before execution. TEXT_ONLY tier.</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Direct / Single-Agent Modes</h2>
+      <div class="grid">
+        <a class="item" href="direct_chat_workflow_diagram.html">
+          <div class="item-title">Direct Chat</div>
+          <div class="item-desc">Fastest path — single Odysseus agent, no adaptive stages. TEXT_ONLY tier. Full VRAM.</div>
+        </a>
+        <a class="item" href="research_rd_workflow_diagram.html">
+          <div class="item-title">Research R&amp;D</div>
+          <div class="item-desc">Dedicated R&amp;D persona for exploratory analytical runs. TEXT_ONLY tier. Single-agent execution.</div>
+        </a>
+        <a class="item" href="gguf_local_direct_workflow_diagram.html">
+          <div class="item-title">GGUF / Local Direct</div>
+          <div class="item-desc">DIRECT_CHAT_GGUF and LOCAL_GGUF compatibility variants. CUDA-only enforced. TEXT_ONLY tier.</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>System Optimization &amp; Hardware <span class="badge">NEW</span></h2>
+      <div class="grid">
+        <a class="item new" href="ue5_session_workflow_diagram.html">
+          <div class="item-title">UE5 Session Monitor <span class="badge">NEW</span></div>
+          <div class="item-desc">Live UE5Editor.exe VRAM watcher. Render state table (IDLE/VIEWPORT/HW_LUMEN/PIE/SEQUENCER), VRAM budget bars, asset push flow, thread strategy.</div>
+        </a>
+        <a class="item vram" href="workflow_diagram.html#vram">
+          <div class="item-title">VRAM Governor <span class="badge purple">NEW</span></div>
+          <div class="item-desc">10-tier classification (TEXT → VIDEO → RENDER_3D → UE5_RENDER). Keyword matching, workflow mode baseline, Pinokio asset type override. RAM warm cache.</div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

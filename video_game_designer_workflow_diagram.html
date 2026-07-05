@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Game Designer Workflow Diagram</title>
+  <style>
+    :root {
+      --bg: #071019;
+      --panel: #102131;
+      --panel2: #132a3f;
+      --text: #e9f3ff;
+      --muted: #a5bdd3;
+      --line: #2f5f82;
+      --accent: #63d2ff;
+      --accent2: #6af0b0;
+      --warn: #ffd166;
+      --ok: #7ee787;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 20% 0%, #12314a, #071019 48%, #04080d 100%);
+      color: var(--text);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      padding: 24px;
+      line-height: 1.45;
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      background: linear-gradient(165deg, rgba(20, 43, 64, 0.96), rgba(11, 24, 36, 0.96));
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    h1 { margin: 0 0 8px; font-size: 30px; }
+    h2 { margin: 0 0 10px; font-size: 20px; color: var(--accent); }
+    p { margin: 6px 0; color: var(--muted); }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .chip {
+      font-size: 12px;
+      border: 1px solid #2f6a91;
+      border-radius: 999px;
+      padding: 4px 9px;
+      background: rgba(31, 73, 102, 0.35);
+      color: #d7ecfb;
+    }
+
+    .diagram {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .node {
+      min-width: 180px;
+      max-width: 230px;
+      background: var(--panel2);
+      border: 1px solid #38739b;
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .node strong {
+      display: block;
+      color: #fff;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .node small {
+      color: var(--muted);
+      font-size: 12px;
+      display: block;
+    }
+
+    .node.warn {
+      border-color: #8e7433;
+      background: rgba(70, 56, 24, 0.45);
+    }
+
+    .node.ok {
+      border-color: #2f7f5a;
+      background: rgba(21, 59, 40, 0.5);
+    }
+
+    .arrow {
+      min-width: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8dcdf3;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .two-col {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr;
+    }
+
+    .list {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .list li { margin: 6px 0; }
+
+    .stage-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .stage {
+      border: 1px solid #356f95;
+      border-radius: 10px;
+      padding: 10px;
+      background: rgba(18, 40, 58, 0.65);
+    }
+
+    .stage h3 {
+      margin: 0 0 6px;
+      color: var(--accent2);
+      font-size: 16px;
+    }
+
+    .note {
+      margin-top: 10px;
+      border-left: 3px solid #4ea0ce;
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(23, 48, 67, 0.5);
+      color: #cfe7f8;
+      font-size: 14px;
+    }
+
+    @media (min-width: 980px) {
+      .two-col { grid-template-columns: 1fr 1fr; }
+      .stage-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <h1>Video Game Designer Workflow</h1>
+      <p>
+        Dedicated diagram for the VIDEO_GAME_DESIGNER adaptive profile.
+        This flow is the Foundry Line pipeline used by the runtime to execute staged game design orchestration.
+      </p>
+      <p><a href="workflow_diagrams_index.html" style="color:#63d2ff; font-weight:600;">Open Workflow Diagrams Hub</a></p>
+      <div class="chips">
+        <span class="chip">Canonical mode: VIDEO_GAME_DESIGNER</span>
+        <span class="chip">Aliases: GAME_DESIGN, VIDEO_GAME_DEV</span>
+        <span class="chip">Blueprint metaphor: Foundry Line</span>
+        <span class="chip">Execution: Parallel specialists + Critic synthesis</span>
+        <span class="chip">VRAM baseline tier: IMAGE_GEN (auto-escalates per asset)</span>
+        <span class="chip">UE5 bridge: native_mcp / web_remote_control / split_55557</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Runtime Flow Diagram</h2>
+      <div class="diagram">
+        <div class="node"><strong>1. Intake</strong><small>Run request arrives with workflow_mode and user_goal.</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>2. Canonicalization</strong><small>Alias mode is normalized to VIDEO_GAME_DESIGNER.</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>3. Crew Assignment</strong><small>Game Designer, Music Composer, Researcher, Coder, Critic.</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>4. Stage Loop</strong><small>Four Foundry stages execute in sequence.</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>5. Artifacts</strong><small>Checkpoint and stage artifact persisted each stage.</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node ok"><strong>6. Completion</strong><small>Success completion event if all stages pass.</small></div>
+      </div>
+      <div class="note">
+        If any stage times out, the run stops with checkpoint retention so the session keeps an auditable recovery point.
+      </div>
+    </section>
+
+    <section class="card two-col">
+      <div>
+        <h2>Foundry Line Stages</h2>
+        <div class="stage-grid">
+          <div class="stage">
+            <h3>Forge Brief</h3>
+            <ul class="list">
+              <li>Core fantasy pillars</li>
+              <li>Target player loop</li>
+              <li>Scope guardrails</li>
+            </ul>
+          </div>
+
+          <div class="stage">
+            <h3>Prototype Cell</h3>
+            <ul class="list">
+              <li>Playable core loop plan</li>
+              <li>Critical mechanic test matrix</li>
+              <li>Failure remediation steps</li>
+            </ul>
+          </div>
+
+          <div class="stage">
+            <h3>Content Mill</h3>
+            <ul class="list">
+              <li>Level and encounter pipeline</li>
+              <li>Asset production queue</li>
+              <li>Integration handoff checklist</li>
+            </ul>
+          </div>
+
+          <div class="stage">
+            <h3>Ship Gate</h3>
+            <ul class="list">
+              <li>Release readiness score</li>
+              <li>Top risk list</li>
+              <li>Go or no-go recommendation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h2>How This Workflow Works</h2>
+        <ul class="list">
+          <li>Each stage builds a staged goal with required deliverables.</li>
+          <li>Worker specialists run in parallel first.</li>
+          <li>The Critic runs after workers and synthesizes verdict, risks, and corrections.</li>
+          <li>Stage checkpoints are written to workflow state.</li>
+          <li>Stage artifacts are persisted under session artifacts for auditability.</li>
+          <li><strong>VRAM pre-flight:</strong> at Content Mill, the governor classifies each asset type before dispatch — image_creation → IMAGE_GEN (partial offload), video_generation / three_d_modeling_animation / avatar_animation → RAM_CACHE eject.</li>
+          <li>After each Pinokio job completes, the governor restores the model from warm cache (~3 s from DDR5).</li>
+          <li>If UE5_SESSION mode is active, the UE5 bridge push is also VRAM-coordinated via UE5_ASSET_PUSH tier.</li>
+        </ul>
+
+        <div class="diagram" style="margin-top: 12px;">
+          <div class="node"><strong>Workers (parallel)</strong><small>Game Designer + Music Composer + Research + Coder</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node warn"><strong>Critic pass</strong><small>Merged stage verdict and risk correction</small></div>
+          <div class="arrow">--&gt;</div>
+          <div class="node ok"><strong>Checkpoint + Artifact</strong><small>Persistent stage output and status</small></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

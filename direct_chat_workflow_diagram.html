@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Direct Chat Workflow Diagram</title>
+  <style>
+    :root { --bg:#0a0f16; --panel:#121c2b; --panel2:#19283d; --line:#33587f; --text:#e8f2ff; --muted:#abc1d8; --accent:#7ec7ff; --ok:#8de1b7; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:radial-gradient(circle at 20% 0%, #1a2a3f, #0a0f16 52%, #05080d 100%); color:var(--text); font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif; padding:24px; }
+    .wrap { max-width:1100px; margin:0 auto; display:grid; gap:16px; }
+    .card { background:linear-gradient(165deg, rgba(22,36,56,.96), rgba(10,18,28,.96)); border:1px solid var(--line); border-radius:14px; padding:16px 18px; }
+    h1 { margin:0 0 8px; font-size:30px; }
+    h2 { margin:0 0 10px; font-size:20px; color:var(--accent); }
+    p, li { color:var(--muted); }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .chip { font-size:12px; border:1px solid #3c6f9a; border-radius:999px; padding:4px 9px; background:rgba(35,63,92,.35); color:#d7ecfb; }
+    .diagram { display:flex; flex-wrap:wrap; align-items:stretch; gap:10px; margin-top:8px; }
+    .node { min-width:185px; max-width:240px; background:var(--panel2); border:1px solid #3f739e; border-radius:10px; padding:10px; }
+    .node strong { display:block; color:#fff; font-size:14px; margin-bottom:6px; }
+    .node small { display:block; color:var(--muted); font-size:12px; }
+    .node.ok { border-color:#2f7f5a; background:rgba(21,59,40,.5); }
+    .arrow { min-width:22px; display:flex; align-items:center; justify-content:center; color:#9cd2f5; font-weight:700; font-size:16px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <h1>Direct Chat Workflow</h1>
+      <p>Dedicated diagram for DIRECT_CHAT, the default single-agent execution path used for fast interactive requests.</p>
+      <p><a href="workflow_diagrams_index.html" style="color:#7ec7ff; font-weight:600;">Open Workflow Diagrams Hub</a></p>
+      <div class="chips">
+        <span class="chip">Canonical mode: DIRECT_CHAT</span>
+        <span class="chip">Execution style: single-agent</span>
+        <span class="chip">Adaptive stage blueprint: none</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Runtime Flow Diagram</h2>
+      <div class="diagram">
+        <div class="node"><strong>1. Intake</strong><small>/run request with session_id, goal, DIRECT_CHAT mode</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>2. Persona Routing</strong><small>persona_from_mode resolves to odysseus</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node"><strong>3. Single Agent Loop</strong><small>execute_agent_run uses _run_agent_goal directly</small></div>
+        <div class="arrow">--&gt;</div>
+        <div class="node ok"><strong>4. Event + Completion</strong><small>streamed events and final completion message</small></div>
+      </div>
+      <p>How it works: this mode bypasses adaptive specialist orchestration and runs one main agent for low-friction command execution.</p>
+    </section>
+  </main>
+</body>
+</html>

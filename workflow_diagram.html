@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Odysseus Workflow Profiles Diagram</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --bg: #060d14;
+      --panel: #0b1825;
+      --panel-2: #0f2030;
+      --text: #e7f2ff;
+      --muted: #7fa8c9;
+      --line: #1e4a6a;
+      --accent: #38c6f5;
+      --accent-2: #4edd9a;
+      --warn: #f0b942;
+      --risk: #f07070;
+      --purple: #a78bfa;
+      --orange: #fb923c;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(ellipse at 15% 0%, #0d2540 0%, var(--bg) 50%, #020609 100%);
+      color: var(--text);
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      line-height: 1.5;
+      padding: 28px 20px;
+      min-height: 100vh;
+    }
+
+    .wrap { max-width: 1380px; margin: 0 auto; display: grid; gap: 20px; }
+
+    .hero, .card {
+      background: linear-gradient(155deg, rgba(14,30,46,0.97), rgba(8,18,28,0.97));
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+
+    .hero { border-color: #2a6090; background: linear-gradient(135deg, rgba(15,35,56,0.98), rgba(8,18,28,0.98)); }
+
+    h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 10px; }
+    h2 { font-size: 18px; font-weight: 600; color: var(--accent); margin-bottom: 12px; }
+    h3 { font-size: 15px; font-weight: 600; color: var(--accent-2); margin-bottom: 8px; }
+    h4 { font-size: 13px; font-weight: 600; color: #94c8e8; margin-bottom: 6px; }
+
+    p, li { color: var(--muted); font-size: 14px; }
+
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+    .chip {
+      font-size: 11px; font-weight: 500; color: #b8d8f0;
+      border: 1px solid #2a5f82; padding: 3px 10px;
+      border-radius: 999px; background: rgba(25,60,88,0.35);
+    }
+    .chip.new { border-color: #2e7a52; background: rgba(20,60,40,0.35); color: #7ee6b0; }
+    .chip.vram { border-color: #6030a0; background: rgba(50,20,80,0.35); color: #c0a0f8; }
+
+    /* ── Flow diagram ── */
+    .diagram {
+      display: flex; align-items: center;
+      flex-wrap: wrap; gap: 8px; margin-top: 12px;
+    }
+
+    .node {
+      min-width: 160px; max-width: 220px;
+      background: var(--panel-2); border: 1px solid #2a5878;
+      border-radius: 10px; padding: 10px 12px;
+    }
+    .node strong { display: block; color: #fff; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .node small   { display: block; color: var(--muted); font-size: 11px; line-height: 1.4; }
+
+    .node.warn   { border-color: #7a5a20; background: rgba(60,44,12,0.5); }
+    .node.risk   { border-color: #7a3030; background: rgba(60,22,22,0.5); }
+    .node.done   { border-color: #2a7050; background: rgba(18,52,34,0.5); }
+    .node.vram   { border-color: #5a30a0; background: rgba(42,20,72,0.5); }
+    .node.ue5    { border-color: #3a6a38; background: rgba(20,50,20,0.5); }
+    .node.accent { border-color: #2080b0; background: rgba(15,52,74,0.5); }
+
+    .arrow { color: #5a9fc0; font-weight: 700; font-size: 18px; padding: 0 2px; }
+
+    .how {
+      margin-top: 10px; padding: 10px 12px;
+      border-left: 3px solid #3080a8; background: rgba(18,44,64,0.4);
+      border-radius: 0 8px 8px 0; color: #c0ddf4; font-size: 13px;
+    }
+
+    /* ── Grid layouts ── */
+    .grid { display: grid; gap: 16px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; }
+
+    @media (min-width: 900px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 1200px) {
+      .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    /* ── Table ── */
+    .table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+    .table th, .table td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+    .table th { background: rgba(30,74,106,0.25); color: #c0dcf0; font-weight: 600; }
+    .table td { color: var(--muted); }
+    .table td:first-child { color: var(--text); font-weight: 500; }
+
+    /* ── VRAM tier table ── */
+    .tier-row td:nth-child(3) { font-family: monospace; font-size: 12px; color: #c0a0f8; }
+
+    /* ── Stage cards ── */
+    .stage {
+      border: 1px solid #254460; border-radius: 10px;
+      padding: 12px; background: rgba(14,32,48,0.6);
+    }
+
+    /* ── Legend ── */
+    .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .legend span {
+      font-size: 11px; padding: 3px 8px; border-radius: 999px;
+      border: 1px solid var(--line); background: rgba(16,36,52,0.7); color: var(--muted);
+    }
+
+    /* ── Endpoint list ── */
+    .endpoint {
+      display: flex; align-items: baseline; gap: 8px;
+      padding: 8px 10px; border: 1px solid #1e4060;
+      border-radius: 8px; background: rgba(12,28,42,0.6); margin-bottom: 6px;
+    }
+    .method {
+      font-size: 11px; font-weight: 700; padding: 2px 7px;
+      border-radius: 4px; flex-shrink: 0;
+    }
+    .method.get  { background: #1a4a30; color: #5de0a0; border: 1px solid #2a6a44; }
+    .method.post { background: #2a3a70; color: #7090f8; border: 1px solid #3a5090; }
+    .path { font-family: monospace; font-size: 12px; color: #90c8e8; }
+    .desc { font-size: 12px; color: var(--muted); margin-left: auto; }
+
+    /* ── VRAM state machine ── */
+    .state-machine {
+      display: grid; gap: 8px; margin-top: 12px;
+      grid-template-columns: 1fr;
+    }
+    .sm-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-radius: 8px;
+      border: 1px solid #1e4060; background: rgba(12,28,44,0.5);
+      font-size: 13px;
+    }
+    .sm-row .trigger { color: var(--accent); font-weight: 500; min-width: 200px; }
+    .sm-row .transition { color: var(--muted); }
+    .sm-row .state { font-weight: 600; color: #b0e0f8; padding: 2px 8px; border-radius: 6px; background: rgba(30,80,120,0.3); border: 1px solid #2a6090; }
+    .sm-row .state.eject { color: #f0b060; background: rgba(80,50,10,0.4); border-color: #806020; }
+    .sm-row .state.partial { color: #90e8b0; background: rgba(20,60,36,0.4); border-color: #2a7044; }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 1px 6px; border-radius: 4px; margin-left: 6px;
+      background: rgba(40,120,60,0.4); color: #7ee0a8; border: 1px solid #2a8042;
+      vertical-align: middle; letter-spacing: 0.5px;
+    }
+    .badge.purple { background: rgba(80,40,120,0.4); color: #c090f8; border-color: #6030a0; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+
+    <!-- ── Hero ── -->
+    <section class="hero">
+      <h1>Odysseus Workflow Profiles — Runtime Diagrams</h1>
+      <p>Complete diagram of every workflow mode, VRAM governor tier, UE5 session states, and adaptive stage execution paths in the Odysseus runtime.</p>
+      <p style="margin-top:8px;"><a href="workflow_diagrams_index.html" style="font-weight:600;">← Workflow Diagrams Hub</a></p>
+      <div class="meta">
+        <span class="chip">Source: agent_orchestrator/main.py</span>
+        <span class="chip">Adaptive engine: execute_agent_run</span>
+        <span class="chip">UI: dashboard/src/components/Cockpit.jsx</span>
+        <span class="chip new">NEW: core/dynamic_vram_governor.py</span>
+        <span class="chip new">NEW: core/ue5_session_monitor.py</span>
+        <span class="chip vram">CUDA only — CPU-only mode hard-blocked</span>
+      </div>
+    </section>
+
+    <!-- ── Workflow Catalog ── -->
+    <section class="card">
+      <h2>Workflow Catalog</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Canonical Mode</th>
+            <th>Aliases</th>
+            <th>Execution Type</th>
+            <th>Persona</th>
+            <th>VRAM Tier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>DIRECT_CHAT</td>
+            <td>—</td>
+            <td>Single-agent direct</td>
+            <td>odysseus</td>
+            <td>TEXT_ONLY</td>
+          </tr>
+          <tr>
+            <td>SOFTWARE_DESIGN</td>
+            <td>SOFTWARE_DEVELOPER, SOFTWARE_DEV</td>
+            <td>Adaptive 4-stage (Shipyard)</td>
+            <td>odysseus_software_dev</td>
+            <td>TEXT_ONLY</td>
+          </tr>
+          <tr>
+            <td>VIDEO_GAME_DESIGNER</td>
+            <td>GAME_DESIGN, VIDEO_GAME_DEV</td>
+            <td>Adaptive 4-stage (Foundry Line)</td>
+            <td>odysseus_game_designer</td>
+            <td>IMAGE_GEN → auto-escalate</td>
+          </tr>
+          <tr>
+            <td>MUSIC_COMPOSER</td>
+            <td>MUSIC, MUSIC_DESIGN, AUDIO_COMPOSER</td>
+            <td>Adaptive 4-stage (Studio Deck)</td>
+            <td>odysseus_music_composer</td>
+            <td>MUSIC_GEN</td>
+          </tr>
+          <tr>
+            <td>REVERSE_ENGINEERING</td>
+            <td>REVERSE_ENGINEER, REV_ENG, RE, SECURITY_RESEARCH</td>
+            <td>Adaptive 4-stage + auth gates (Lab Bench)</td>
+            <td>odysseus_reverse_engineer</td>
+            <td>TEXT_ONLY</td>
+          </tr>
+          <tr>
+            <td>RESEARCH_RD</td>
+            <td>—</td>
+            <td>Single-agent direct</td>
+            <td>odysseus_research_rd</td>
+            <td>TEXT_ONLY</td>
+          </tr>
+          <tr>
+            <td>DIRECT_CHAT_GGUF / LOCAL_GGUF</td>
+            <td>—</td>
+            <td>Single-agent direct</td>
+            <td>odysseus</td>
+            <td>TEXT_ONLY</td>
+          </tr>
+          <tr>
+            <td><strong>UE5_SESSION</strong> <span class="badge">NEW</span></td>
+            <td>UE5, UNREAL, UNREAL_ENGINE</td>
+            <td>Co-pilot session + live VRAM monitor</td>
+            <td>odysseus</td>
+            <td>UE5_COEXIST → auto per render state</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ── Core Engine Flow ── -->
+    <section class="card">
+      <h2>Core Engine Flow (All Modes)</h2>
+      <div class="diagram">
+        <div class="node"><strong>1. /run request</strong><small>session_id + user_goal + workflow_mode</small></div>
+        <div class="arrow">→</div>
+        <div class="node vram"><strong>2. VRAM Governor</strong><small>classify_task() → tier assigned before inference starts</small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>3. Canonicalize mode</strong><small>alias map resolves to canonical workflow key</small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>4. Persona select</strong><small>persona_from_mode() picks primary agent persona</small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>5. Branch</strong><small>Adaptive blueprint exists? → staged crew flow. No → single-agent run.</small></div>
+      </div>
+      <div class="how">The VRAM Governor now runs at step 2 — before any inference — and transitions the model state (FULL_GPU / PARTIAL_GPU / RAM_CACHE) based on the task tier. This ensures Pinokio and UE5 never fight for the same VRAM.</div>
+    </section>
+
+    <!-- ── VRAM Governor ── -->
+    <section class="card">
+      <h2>VRAM Governor <span class="badge">NEW</span></h2>
+      <p style="margin-bottom:14px;">The governor classifies every task into a resource tier <em>before</em> running it, then transitions the GGUF model between three states to ensure Odysseus and external GPU processes (Pinokio, UE5) never collide on the RTX 4080's 16 GB VRAM.</p>
+
+      <h3>Task Tier → Model State Mapping</h3>
+      <table class="table tier-row" style="margin-bottom:16px;">
+        <thead>
+          <tr><th>Tier</th><th>Triggers</th><th>n_gpu_layers</th><th>Model State</th><th>VRAM Reserved</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>TEXT_ONLY</td><td>Code, chat, research, RE workflows</td><td>-1 (all)</td><td>FULL_GPU</td><td>0 GB</td></tr>
+          <tr><td>MUSIC_GEN</td><td>Music keywords, MUSIC_COMPOSER mode</td><td>-1 (all)</td><td>FULL_GPU</td><td>2 GB</td></tr>
+          <tr><td>VOICE_GEN</td><td>TTS / voice keywords</td><td>-1 (all)</td><td>FULL_GPU</td><td>3 GB</td></tr>
+          <tr><td>IMAGE_GEN</td><td>Image / FLUX / SDXL keywords</td><td>18</td><td>PARTIAL_GPU</td><td>7 GB</td></tr>
+          <tr><td>UE5_COEXIST</td><td>UE5_SESSION mode, UE5 idle/viewport</td><td>22</td><td>PARTIAL_GPU</td><td>7 GB</td></tr>
+          <tr><td>AVATAR_GEN</td><td>Avatar / face-swap / lip-sync keywords</td><td>0</td><td>RAM_CACHE</td><td>9 GB</td></tr>
+          <tr><td>RENDER_3D</td><td>Blender / UE5 / 3D model keywords</td><td>0</td><td>RAM_CACHE</td><td>13 GB</td></tr>
+          <tr><td>UE5_RENDER</td><td>UE5 PIE / HW Lumen / Sequencer detected</td><td>0</td><td>RAM_CACHE</td><td>13 GB</td></tr>
+          <tr><td>VIDEO_GEN</td><td>Video / Wan2.1 / CogVideoX keywords</td><td>0</td><td>RAM_CACHE</td><td>14 GB</td></tr>
+          <tr><td>UE5_ASSET_PUSH</td><td>Asset push → UE5 bridge + Pinokio</td><td>0</td><td>RAM_CACHE</td><td>14 GB</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Classification Priority (highest wins)</h3>
+      <div class="diagram">
+        <div class="node accent"><strong>1. Pinokio asset_types</strong><small>Most authoritative. image_creation, video_generation, three_d_modeling_animation, avatar_animation, music_generation, voice_generation</small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>2. Goal text keywords</strong><small>Avatar &gt; 3D &gt; Video &gt; Image &gt; Music &gt; Voice</small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>3. Workflow mode baseline</strong><small>UE5_SESSION → UE5_COEXIST, MUSIC_COMPOSER → MUSIC_GEN, etc.</small></div>
+      </div>
+
+      <h3 style="margin-top:16px;">RAM Warm Cache</h3>
+      <div class="how">When the model is ejected to RAM_CACHE, all load parameters (model_path, n_ctx, n_gpu_layers, n_threads, temperature) are stored in a <code>WarmModelCache</code>. When the task completes, the model reloads from the OS page cache in ~3 seconds instead of 30–60 s from NVMe. Your 64 GB DDR5 makes this possible.</div>
+    </section>
+
+    <!-- ── UE5 Session Monitor ── -->
+    <section class="card">
+      <h2>UE5 Session Monitor <span class="badge">NEW</span></h2>
+      <p style="margin-bottom:14px;">Polls <code>nvidia-smi</code> every 2 seconds to measure UE5Editor.exe VRAM in real time. Uses 2-sample hysteresis before committing state changes (prevents flapping on transient spikes). Fires the VRAM governor callback automatically on every confirmed transition.</p>
+
+      <h3>UE5 Render State → Governor Action</h3>
+      <div class="state-machine">
+        <div class="sm-row">
+          <span class="trigger">UE5 CLOSED (not running)</span>
+          <span class="transition">→</span>
+          <span class="state">FULL_GPU restored</span>
+          <span class="desc">8 P-core threads, all layers in VRAM</span>
+        </div>
+        <div class="sm-row">
+          <span class="trigger">UE5 IDLE (&lt; 4 GB VRAM)</span>
+          <span class="transition">→</span>
+          <span class="state partial">PARTIAL_GPU — 25 layers</span>
+          <span class="desc">~5 GB model, shares with UE5</span>
+        </div>
+        <div class="sm-row">
+          <span class="trigger">UE5 VIEWPORT (4–7.5 GB)</span>
+          <span class="transition">→</span>
+          <span class="state partial">PARTIAL_GPU — 20 layers</span>
+          <span class="desc">Realtime viewport active</span>
+        </div>
+        <div class="sm-row">
+          <span class="trigger">UE5 HW_LUMEN (7.5–10.5 GB)</span>
+          <span class="transition">→</span>
+          <span class="state partial">PARTIAL_GPU — 12 layers, 6 threads</span>
+          <span class="desc">Hardware ray-traced Lumen</span>
+        </div>
+        <div class="sm-row">
+          <span class="trigger">UE5 PIE (10.5–13 GB)</span>
+          <span class="transition">→</span>
+          <span class="state eject">RAM_CACHE — eject, 4 threads</span>
+          <span class="desc">Play-In-Editor running</span>
+        </div>
+        <div class="sm-row">
+          <span class="trigger">UE5 SEQUENCER (&gt; 13 GB)</span>
+          <span class="transition">→</span>
+          <span class="state eject">RAM_CACHE — full eject, 4 threads</span>
+          <span class="desc">Cinematic / movie render queue</span>
+        </div>
+      </div>
+      <div class="how" style="margin-top:12px;">Thread reduction during PIE/Sequencer gives UE5's game thread and render thread more headroom on the P-cores. When UE5 stops PIE, the monitor detects the VRAM drop within 2 polls (4 s) and automatically reloads the model from warm cache.</div>
+    </section>
+
+    <!-- ── New API Endpoints ── -->
+    <section class="card">
+      <h2>New API Endpoints <span class="badge">NEW</span></h2>
+      <div class="endpoint">
+        <span class="method get">GET</span>
+        <span class="path">/vram/governor/status</span>
+        <span class="desc">Live VRAM state, current tier, tier config table, transition stats, CPU topology</span>
+      </div>
+      <div class="endpoint">
+        <span class="method get">GET</span>
+        <span class="path">/vram/ue5/session-status</span>
+        <span class="desc">Live UE5 render state, per-process VRAM split, active governor action</span>
+      </div>
+      <div class="endpoint">
+        <span class="method post">POST</span>
+        <span class="path">/vram/governor/hint</span>
+        <span class="desc">Manually force a tier {"tier":"VIDEO_GEN"} or restore {"action":"restore"}</span>
+      </div>
+      <div class="endpoint">
+        <span class="method get">GET</span>
+        <span class="path">/hardware/profile</span>
+        <span class="desc">CPU topology (P-core/E-core split), VRAM live stats, CUDA availability</span>
+      </div>
+    </section>
+
+    <!-- ── Workflow Cards ── -->
+    <div class="grid grid-2">
+
+      <article class="card">
+        <h3>DIRECT_CHAT</h3>
+        <div class="diagram">
+          <div class="node"><strong>Goal intake</strong><small>mode defaults to DIRECT_CHAT</small></div>
+          <div class="arrow">→</div>
+          <div class="node vram"><strong>VRAM: TEXT_ONLY</strong><small>model stays FULL_GPU</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><strong>Single Odysseus agent</strong><small>no adaptive stage blueprint</small></div>
+          <div class="arrow">→</div>
+          <div class="node done"><strong>Result stream</strong><small>events and final response</small></div>
+        </div>
+        <div class="how">Fastest path. Bypasses staged specialist orchestration. One agent loop, full VRAM.</div>
+      </article>
+
+      <article class="card">
+        <h3>SOFTWARE_DESIGN (Shipyard)</h3>
+        <div class="diagram">
+          <div class="node"><strong>Keel Alignment</strong><small>problem framing, context map</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><strong>Hull Framing</strong><small>domain boundaries, contracts</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><strong>Systems Wiring</strong><small>integration, observability</small></div>
+          <div class="arrow">→</div>
+          <div class="node done"><strong>Launch Dock</strong><small>cutover, rollback, checklist</small></div>
+        </div>
+        <div class="how">4-stage adaptive. Specialists run in parallel, Critic synthesizes. TEXT_ONLY tier — full VRAM throughout.</div>
+      </article>
+
+      <article class="card">
+        <h3>VIDEO_GAME_DESIGNER (Foundry Line)</h3>
+        <div class="diagram">
+          <div class="node"><strong>Forge Brief</strong><small>fantasy pillars, scope guardrails</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><strong>Prototype Cell</strong><small>core loop plan, test matrix</small></div>
+          <div class="arrow">→</div>
+          <div class="node warn"><strong>Content Mill</strong><small>asset queue → image/video/music/3D/avatar jobs dispatched</small></div>
+          <div class="arrow">→</div>
+          <div class="node done"><strong>Ship Gate</strong><small>readiness score, go/no-go</small></div>
+        </div>
+        <div class="how">At Content Mill, asset jobs are dispatched to Pinokio. The VRAM governor pre-classifies each asset type and transitions model state accordingly before dispatch.</div>
+      </article>
+
+      <article class="card">
+        <h3>MUSIC_COMPOSER (Studio Deck)</h3>
+        <div class="diagram">
+          <div class="node"><strong>Score Brief</strong><small>direction, emotional arc, cue map</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><strong>Theme Forge</strong><small>motifs, combat/ambience variations</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><strong>Voice Direction</strong><small>voice style and delivery payload</small></div>
+          <div class="arrow">→</div>
+          <div class="node done"><strong>Mix Master</strong><small>mastering targets and runtime notes</small></div>
+        </div>
+        <div class="how">MUSIC_GEN tier — audio models are tiny (&lt;2 GB), so Odysseus model stays in FULL_GPU during music/voice generation. No eject required.</div>
+      </article>
+
+      <article class="card">
+        <h3>REVERSE_ENGINEERING (Lab Bench)</h3>
+        <div class="diagram">
+          <div class="node warn"><strong>Authorization Gate</strong><small>scope and declaration checks</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><strong>Scope Authorization</strong><small>legal scope, baseline, risk</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><strong>Artifact Teardown</strong><small>component map, decode strategy</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><strong>Debug Trace</strong><small>fault localization, state reconstruction</small></div>
+          <div class="arrow">→</div>
+          <div class="node done"><strong>Vulnerability Triage</strong><small>findings, impact, mitigations</small></div>
+        </div>
+        <div class="how">Policy-gated before execution. TEXT_ONLY tier — full VRAM. Authorization metadata must pass before adaptive stages run.</div>
+      </article>
+
+      <article class="card">
+        <h3>UE5_SESSION <span class="badge">NEW</span></h3>
+        <div class="diagram">
+          <div class="node ue5"><strong>UE5 Detected</strong><small>nvidia-smi finds UE5Editor.exe</small></div>
+          <div class="arrow">→</div>
+          <div class="node vram"><strong>VRAM classified</strong><small>Live VRAM → IDLE/VIEWPORT/HW_LUMEN/PIE/SEQUENCER</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><strong>Governor transitions</strong><small>auto: PARTIAL_GPU or RAM_CACHE eject</small></div>
+          <div class="arrow">→</div>
+          <div class="node done"><strong>UE5 closed</strong><small>FULL_GPU restored from warm cache</small></div>
+        </div>
+        <div class="how">Fully automatic. No user action required. The UE5 Session Monitor polls every 2 s and adjusts model state as UE5's render workload changes throughout the session.</div>
+      </article>
+
+    </div>
+
+    <!-- ── Adaptive Stage Internals ── -->
+    <section class="card">
+      <h2>Adaptive Stage Execution Internals</h2>
+      <div class="diagram">
+        <div class="node"><strong>Stage starts</strong><small>engine sets stage_id, label, pattern, capabilities</small></div>
+        <div class="arrow">→</div>
+        <div class="node vram"><strong>VRAM pre-flight</strong><small>governor.classify_task(goal, mode, asset_types)</small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>Parallel specialists</strong><small>non-critic personas run concurrently on staged_goal</small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>Critic synthesis</strong><small>merges outputs, risks, and corrections</small></div>
+        <div class="arrow">→</div>
+        <div class="node"><strong>Checkpoint + artifact</strong><small>persisted to session state</small></div>
+        <div class="arrow">→</div>
+        <div class="node done"><strong>Optional asset queue</strong><small>governor transitions model, Pinokio job dispatched</small></div>
+      </div>
+      <p style="margin-top:10px;">If any stage times out or fails, the workflow stops with checkpoint retention. If all stages pass, the run emits completion and the governor restores FULL_GPU.</p>
+    </section>
+
+    <!-- ── i9 Thread Strategy ── -->
+    <section class="card">
+      <h2>i9-13900KF Thread Partitioning</h2>
+      <div class="grid grid-2">
+        <div>
+          <h3>During normal inference</h3>
+          <table class="table" style="margin-top:8px;">
+            <thead><tr><th>Core type</th><th>Threads</th><th>Assignment</th></tr></thead>
+            <tbody>
+              <tr><td>P-cores (0–15, 8×HT)</td><td>8</td><td>llama.cpp inference — locked</td></tr>
+              <tr><td>E-cores (16–31)</td><td>16</td><td>Background: ChromaDB, disk I/O, Pinokio scheduler</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>During UE5 PIE / Render</h3>
+          <table class="table" style="margin-top:8px;">
+            <thead><tr><th>Core type</th><th>Threads</th><th>Assignment</th></tr></thead>
+            <tbody>
+              <tr><td>P-cores (0–15)</td><td>4</td><td>llama.cpp (reduced) — model may be ejected</td></tr>
+              <tr><td>P-cores (0–15)</td><td>4+</td><td>UE5 game thread + render thread</td></tr>
+              <tr><td>E-cores (16–31)</td><td>16</td><td>UE5 Nanite streaming, shader compilation</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>
