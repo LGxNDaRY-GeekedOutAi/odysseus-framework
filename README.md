@@ -1,5 +1,5 @@
-# 🌌 Odysseus: Multi-Agentic Command & Control
-**[ STATUS: OPERATIONAL | VERSION: 0.0.92 ]**
+# 🌌 Odysseus: Multi-Agentic Command & Control Framework
+**[ STATUS: OPERATIONAL (Beta) | VERSION: 0.0.92 ]**
 
 > **Odysseus is a proprietary, high-performance orchestration framework designed for autonomous, multimodal task execution. It bridges the gap between Large Language Models and physical/digital interaction through a sophisticated "Sensory-to-Action" pipeline.**
 
@@ -48,4 +48,4 @@ Odysseus adapts its resource allocation and workflow complexity based on the mis
 *   **Deployment State:** Industrial-Grade / Private
 
 ---
-*© 2024 Odysseus Framework. All Rights Reserved.*
+*© 2026 Odysseus Framework. All Rights Reserved.*
