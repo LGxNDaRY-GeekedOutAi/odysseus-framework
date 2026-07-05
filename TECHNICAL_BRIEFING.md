@@ -92,28 +92,6 @@ The framework is built to solve the "Agentic Resource Exhaustion" problem: ensur
 
 ---
 
-
-stateDiagram-v2
-    [*] --> Idle
-    Idle --> Monitoring: System Load Detected
-    
-    state Monitoring {
-        [*] --> Low_Resource
-        Low_Resource --> Medium_Resource: Compute Demand Increasing
-        Medium_Resource --> High_Resource: Critical Demand (e.g. UE5 Active)
-        High_Resource --> Low_Resource: Task Completed
-    }
-
-    state High_Resource {
-        [*] --> TEXT_ONLY_MODE
-        TEXT_ONLY_MODE --> AUDIO_GEN_MODE: Demand > Threshold
-        AUDIO_GEN_MODE --> RENDER_3D_MODE: Critical Requirement
-    }
-
-    Monitoring --> Idle: Resource Threshold Reached
-
-
-
 ## 🏗️ The Architecture: A Triple-Layer Command Model
 
 sequenceDiagram
