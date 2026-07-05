@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+libc.so
+lib64.so
+locale/
+lib/python*/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Virtual Environments
+.venv
+venv/
+ENV/
+
+# Node / React / Vite
+node_modules/
+dist/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python Environment/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Large Files / Models (Crucial for Agentic Workflows)
+*.bin
+*.pth
+*.onnx
+*.gguf
+*.safetensors
+*.ckpt
+
+# System Files
+.DS_Store
+Thumbs.db
