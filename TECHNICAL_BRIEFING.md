@@ -129,7 +129,6 @@ graph TD
     style Interface_Layer fill:#0c1a28,stroke:#b080f8,stroke-width:2px,color:#e4f0ff
 
 ### 🛠️ Software Designer Lifecycle (Shipyard Mode)
-
 ```mermaid
 sequenceDiagram
     participant U as User / Architect
