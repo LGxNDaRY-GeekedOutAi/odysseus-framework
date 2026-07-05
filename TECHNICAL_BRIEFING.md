@@ -84,3 +84,18 @@ Odysseus moves beyond text-based interaction into the domain of **Spatial-Semant
 
 ---
 
+---
+
+## 📊 Visual Logic & Operational Flow
+
+To visualize the transition from high-level intent to low-level execution, the Odysseus framework utilizes several adaptive workflow models. These models define how the agent allocates resources (VRAM/Compute) across different task lifecycles.
+
+### **Adaptive Lifecycle Models**
+*   **The Shipyard (Software Design):** A 4-stage logic flow focusing on architecture $\rightarrow$ deployment.
+*   **The Studio Deck (Multimedia):** A 4-stage logic flow focusing on composition $\rightarrow$ mastering.
+*   **The Foundry Line (Game Engineering):** A complex, high-resource loop involving 3D and audio dispatch.
+
+*Detailed interactive diagrams can be found in the [Workflow Diagrams Hub](workflow_diagrams_index.html).*
+
+---
+*© 2026 Odysseus Framework. All Rights Reserved.*
