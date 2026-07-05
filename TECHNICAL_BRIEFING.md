@@ -127,3 +127,30 @@ graph TD
     style Intelligence_Layer fill:#0c1a28,stroke:#38c6f5,stroke-width:2px,color:#e4f0ff
     style Sensory_Layer fill:#060c14,stroke:#3de898,stroke-width:2px,color:#e4f0ff
     style Interface_Layer fill:#0c1a28,stroke:#b080f8,stroke-width:2px,color:#e4f0ff
+
+### 🛠️ Software Designer Lifecycle (Shipyard Mode)
+
+```mermaid
+sequenceDiagram
+    participant U as User / Architect
+    participant O as Orchestrator
+    participant S as Software Designer Agent
+    participant E as Execution Environment
+
+    U->>O: High-Level Architecture Request
+    Note over O,S: [Stage 1: Keel Alignment]
+    O->>S: Define Core System Structure
+    S->>E: Scaffold Project (File Creation)
+    
+    Note over O,S: [Stage 2: Hull Framing]
+    O->>S: Implement Core Logic & Interfaces
+    S->>E: Write Module Implementations
+
+    Note over O,S: [Stage 3: Systems Wiring]
+    O->>S: Integrate Modules & Dependencies
+    S->>E: Perform Automated Testing
+
+    Note over O,S: [Stage 4: Launch Dock]
+    O->>S: Final Validation & Deployment
+    S->>E: Deploy to Runtime
+    E-->>U: Deployment Successful
